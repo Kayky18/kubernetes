@@ -21,4 +21,4 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: "kaykymarinho/goserver:latest" 
+          image: "kaykymarinho/goserver:latest"
