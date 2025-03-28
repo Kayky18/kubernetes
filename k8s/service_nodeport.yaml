@@ -1,0 +1,17 @@
+apiVersion: v1
+
+kind: Service
+metadata:
+  name: goserver
+spec:
+  selector:
+    app: goserver
+
+  type: NodePort # This is the default value, it will create a service that is only accessible from within the cluster
+
+  ports:
+  - name: goserver-service
+    port: 80 # This is the port that the service will listen on
+    targetPort: 80 # This is the port that the container is listening on
+    protocol: TCP
+    nodePort: 30001 # This is the port that will be exposed to the outside world / any person acess port 30001 will be redirected to port 80 of the container / 30000-32767 is the range of ports that can be used for NodePort

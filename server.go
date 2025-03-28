@@ -1,6 +1,11 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"os"
+)
 
 func main() {
 	http.HandleFunc("/", HelloServer)
@@ -8,5 +13,20 @@ func main() {
 }
 
 func HelloServer(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("<h1>Hello world</h1>"))
+	name := os.Getenv("NAME")
+	age := os.Getenv("AGE")
+
+	fmt.Fprintf(w, "Hello, I'm %s. Age: %s", name,
+		age)
+
+}
+func ConfigMapServer(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadFile("/etc/goserverg/members.txt")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "Hello, %s", string(data))
+
 }

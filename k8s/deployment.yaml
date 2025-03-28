@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  name: "goserver"
+  labels:
+    app: "goserver"
+
+spec:
+  selector:
+    matchLabels:
+      app: goserver
+
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        app: "goserver"
+    spec:
+      containers:
+        - name: goserver
+          image: "kaykymarinho/goserver:v3"
+          
+          envFrom:
+            - configMapKeyRef:
+                name: goserver-env #Puxa todas as variaveis automaticamente
+
+          volumeMounts:
+            - name: goserver-config  #define o nome do volume que será montado
+              mountPath: /etc/goserver #define onde vai ficar os arquivos do volume
+              readOnly: true
+      
+      
+      volumes:
+        - name: goserver-config #define o nome do volume
+          configMap:
+            name: configmap-members # define o nome do configmap que será montado
+            items:
+            - key: members #define o nome do arquivo que será montado
+              path: "members.txt" # define o caminho do arquivo que será montado
+            
+
+
+          #env:
+          #  - name: NAME
+          #    valueFrom:
+          #      configMapKeyRef:
+          #        name: goserver-env
+          #        key: NAME
+          #
+          #  - name: AGE
+          #    valueFrom:
+          #      configMapKeyRef:
+          #        name: goserver-env
+          #        key: AGE

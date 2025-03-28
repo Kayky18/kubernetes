@@ -7,10 +7,11 @@ spec:
   selector:
     app: goserver
 
-  type: ClusterIP # This is the default value, it will create a service that is only accessible from within the cluster
+  type: LoadBalancer # This will create a service that is accessible from outside the cluster
 
   ports:
   - name: goserver-service
     port: 80 # This is the port that the service will listen on
     targetPort: 80 # This is the port that the container is listening on
     protocol: TCP
+
